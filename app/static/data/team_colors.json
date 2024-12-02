@@ -1,0 +1,314 @@
+{
+  "Arsenal": {
+    "teamID": 1,
+    "home": {
+      "primary_color": [232, 36, 52],
+      "secondary_color": [255, 255, 255]
+    },
+    "away": {
+      "primary_color": [45, 45, 45],
+      "secondary_color": [255, 255, 255],
+      "third_color": [3, 133, 71],
+      "fourth_color": [182, 27, 36]
+    },
+    "third": {
+      "primary_color": [177, 216, 226],
+      "secondary_color": [19, 22, 58]
+    }
+  },
+  "Aston Villa": {
+    "teamID": 2,
+    "home": {
+      "primary_color": [222, 218, 215],
+      "secondary_color": [102, 26, 49]
+    },
+    "away": {
+      "primary_color": [215, 207, 196],
+      "secondary_color": [106, 151, 178]
+    },
+    "third": {
+      "primary_color": [34, 49, 80],
+      "secondary_color": [222, 218, 215]
+    }
+  },
+  "AFC Bournemouth": {
+    "teamID": 3,
+    "home": {
+      "primary_color": [44, 33, 41],
+      "secondary_color": [212, 36, 25]
+    },
+    "away": {
+      "primary_color": [238, 239, 246],
+      "secondary_color": [134, 72, 128],
+      "third_color": [107, 195, 206]
+    },
+    "third": {
+      "primary_color": [0, 154, 198],
+      "secondary_color": [251, 239, 241]
+    }
+  },
+  "Brentford": {
+    "teamID": 4,
+    "home": {
+      "primary_color": [201, 17, 27],
+      "secondary_color": [185, 199, 215],
+      "third_color": [16, 17, 16]
+    },
+    "away": {
+      "primary_color": [253, 226, 235],
+      "secondary_color": [89, 29, 88]
+    },
+    "third": {
+      "primary_color": [18, 58, 53],
+      "secondary_color": [16, 22, 27],
+      "third_color": [202, 233, 125]
+    }
+  },
+  "Brighton": {
+    "teamID": 5,
+    "home": {
+      "primary_color": [224, 222, 220],
+      "secondary_color": [35, 96, 173]
+    },
+    "away": {
+      "primary_color": [232, 178, 0],
+      "secondary_color": [66, 61, 27]
+    }
+  },
+  "Chelsea": {
+    "teamID": 6,
+    "home": {
+      "primary_color": [28, 32, 132],
+      "secondary_color": [65, 145, 245]
+    },
+    "away": {
+      "primary_color": [255, 255, 255],
+      "secondary_color": [43, 55, 131]
+    },
+    "third": {
+      "primary_color": [21, 20, 25],
+      "secondary_color": [255, 123, 189]
+    }
+  },
+  "Crystal Palace": {
+    "teamID": 7,
+    "home": {
+      "primary_color": [43, 79, 234],
+      "secondary_color": [225, 59, 71]
+    },
+    "away": {
+      "primary_color": [228, 190, 18],
+      "secondary_color": [4, 58, 187]
+    },
+    "third": {
+      "primary_color": [5, 9, 14],
+      "secondary_color": [10, 36, 186],
+      "third_color": [212, 18, 32]
+    }
+  },
+  "Everton": {
+    "teamID": 8,
+    "home": {
+      "primary_color": [15, 84, 190],
+      "secondary_color": [205, 216, 244]
+    },
+    "away": {
+      "primary_color": [27, 43, 58],
+      "secondary_color": [226, 214, 56]
+    },
+    "third": {
+      "primary_color": [228, 208, 190],
+      "secondary_color": [86, 72, 76]
+    }
+  },
+  "Fulham": {
+    "teamID": 9,
+    "home": {
+      "primary_color": [185, 185, 201],
+      "secondary_color": [59, 57, 67],
+      "third_color": [154, 5, 20]
+    },
+    "away": {
+      "primary_color": [36, 34, 42],
+      "secondary_color": [178, 8, 31],
+      "third_color": [243, 242, 249]
+    },
+    "third": {
+      "primary_color": [143, 96, 191],
+      "secondary_color": [35, 59, 114],
+      "third_color": [235, 231, 240]
+    }
+  },
+  "Ipswich": {
+    "teamID": 10,
+    "home": {
+      "primary_color": [1, 88, 211],
+      "secondary_color": [0, 28, 71],
+      "third_color": [199, 204, 213]
+    },
+    "away": {
+      "primary_color": [81, 33, 54],
+      "secondary_color": [23, 71, 121],
+      "third_color": [231, 184, 83]
+    },
+    "third": {
+      "primary_color": [223, 25, 96],
+      "secondary_color": [232, 236, 240]
+    }
+  },
+  "Leicester": {
+    "teamID": 11,
+    "home": {
+      "primary_color": [59, 126, 233],
+      "secondary_color": [248, 248, 247]
+    },
+    "away": {
+      "primary_color": [24, 32, 38],
+      "secondary_color": [235, 132, 154],
+      "third_color": [255, 194, 121]
+    },
+    "third": {
+      "primary_color": [225, 223, 235],
+      "secondary_color": [27, 31, 75]
+    }
+  },
+  "Liverpool": {
+    "teamID": 12,
+    "home": {
+      "primary_color": [162, 1, 10],
+      "secondary_color": [255, 253, 254],
+      "third_color": [236, 200, 12]
+    },
+    "away": {
+      "primary_color": [27, 27, 25],
+      "secondary_color": [69, 208, 207],
+      "third_color": [243, 242, 235]
+    },
+    "third": {
+      "primary_color": [224, 224, 224],
+      "secondary_color": [232, 24, 47]
+    }
+  },
+  "Man City": {
+    "teamID": 13,
+    "home": {
+      "primary_color": [156, 202, 240],
+      "secondary_color": [0, 42, 64]
+    },
+    "away": {
+      "primary_color": [30, 38, 49],
+      "secondary_color": [226, 250, 103]
+    },
+    "third": {
+      "primary_color": [99, 41, 51],
+      "secondary_color": [163, 93, 103]
+    }
+  },
+  "Man Utd": {
+    "teamID": 14,
+    "home": {
+      "primary_color": [240, 15, 57],
+      "secondary_color": [241, 250, 238]
+    },
+    "away": {
+      "primary_color": [2, 11, 53],
+      "secondary_color": [221, 231, 233]
+    },
+    "third": {
+      "primary_color": [246, 246, 248],
+      "secondary_color": [246, 246, 248],
+      "third_color": [240, 15, 57]
+    }
+  },
+  "Newcastle": {
+    "teamID": 15,
+    "home": {
+      "primary_color": [7, 2, 1],
+      "secondary_color": [238, 238, 240]
+    },
+    "away": {
+      "primary_color": [163, 5, 40],
+      "secondary_color": [10, 24, 64]
+    },
+    "third": {
+      "primary_color": [186, 192, 199],
+      "secondary_color": [6, 105, 113]
+    }
+  },
+  "Nott'm Forest": {
+    "teamID": 16,
+    "home": {
+      "primary_color": [208, 2, 32],
+      "secondary_color": [255, 255, 255]
+    },
+    "away": {
+      "primary_color": [37, 36, 56],
+      "secondary_color": [250, 1, 95]
+    },
+    "third": {
+      "primary_color": [92, 169, 197],
+      "secondary_color": [255, 255, 255]
+    }
+  },
+  "Southampton": {
+    "teamID": 17,
+    "home": {
+      "primary_color": [250, 2, 34],
+      "secondary_color": [239, 236, 253]
+    },
+    "away": {
+      "primary_color": [255, 248, 77],
+      "secondary_color": [255, 255, 152]
+    },
+    "third": {
+      "primary_color": [252, 156, 250],
+      "secondary_color": [255, 255, 255]
+    }
+  },
+  "Tottenham Hotspur": {
+    "teamID": 18,
+    "home": {
+      "primary_color": [242, 245, 255],
+      "secondary_color": [7, 22, 71]
+    },
+    "away": {
+      "primary_color": [153, 183, 236],
+      "secondary_color": [191, 203, 233],
+      "third_color": [45, 49, 95]
+    },
+    "third": {
+      "primary_color": [68, 118, 115],
+      "secondary_color": [189, 199, 190]
+    }
+  },
+  "West Ham": {
+    "teamID": 19,
+    "home": {
+      "primary_color": [126, 38, 36],
+      "secondary_color": [197, 205, 210]
+    },
+    "away": {
+      "primary_color": [7, 7, 9],
+      "secondary_color": [227, 233, 236]
+    },
+    "third": {
+      "primary_color": [245, 245, 245],
+      "secondary_color": [175, 52, 69]
+    }
+  },
+  "Wolves": {
+    "teamID": 20,
+    "home": {
+      "primary_color": [252, 253, 253],
+      "secondary_color": [46, 44, 43]
+    },
+    "away": {
+      "primary_color": [6, 6, 6],
+      "secondary_color": [198, 143, 30]
+    },
+    "third": {
+      "primary_color": [171, 73, 213],
+      "secondary_color": [252, 253, 253]
+    }
+  }
+}

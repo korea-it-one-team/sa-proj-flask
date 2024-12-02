@@ -1,0 +1,76 @@
+2024-12-02 18:12:02,781 - INFO - ·Î±ë ¼³Á¤ÀÌ ¿Ï·áµÇ¾ú½À´Ï´Ù.
+2024-12-02 18:12:02,795 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.2.17:5000
+2024-12-02 18:12:02,795 - INFO - [33mPress CTRL+C to quit[0m
+2024-12-02 18:12:02,801 - INFO -  * Restarting with stat
+2024-12-02 18:12:05,780 - INFO - ·Î±ë ¼³Á¤ÀÌ ¿Ï·áµÇ¾ú½À´Ï´Ù.
+2024-12-02 18:12:05,788 - WARNING -  * Debugger is active!
+2024-12-02 18:12:05,791 - INFO -  * Debugger PIN: 131-063-404
+2024-12-02 18:12:13,275 - INFO - 127.0.0.1 - - [02/Dec/2024 18:12:13] "[33mGET /health HTTP/1.1[0m" 404 -
+2024-12-02 18:12:13,318 - INFO - 127.0.0.1 - - [02/Dec/2024 18:12:13] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2024-12-02 18:14:50,074 - INFO - 127.0.0.1 - - [02/Dec/2024 18:14:50] "GET /health/health HTTP/1.1" 200 -
+2024-12-02 18:15:16,573 - INFO -  * Detected change in 'C:\\work_oneteam\\sa_proj_flask\\app\\__init__.py', reloading
+2024-12-02 18:15:16,966 - INFO -  * Restarting with stat
+2024-12-02 18:15:19,545 - INFO - ·Î±ë ¼³Á¤ÀÌ ¿Ï·áµÇ¾ú½À´Ï´Ù.
+2024-12-02 18:15:19,552 - WARNING -  * Debugger is active!
+2024-12-02 18:15:19,554 - INFO -  * Debugger PIN: 131-063-404
+2024-12-02 18:16:50,620 - INFO -  * Detected change in 'C:\\work_oneteam\\sa_proj_flask\\app\\routes\\health_routes.py', reloading
+2024-12-02 18:16:50,941 - INFO -  * Restarting with stat
+2024-12-02 18:16:53,471 - INFO - ·Î±ë ¼³Á¤ÀÌ ¿Ï·áµÇ¾ú½À´Ï´Ù.
+2024-12-02 18:16:53,478 - WARNING -  * Debugger is active!
+2024-12-02 18:16:53,480 - INFO -  * Debugger PIN: 131-063-404
+2024-12-02 18:17:02,486 - INFO - ·Î±ë ¼³Á¤ÀÌ ¿Ï·áµÇ¾ú½À´Ï´Ù.
+2024-12-02 18:17:02,498 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.2.17:5000
+2024-12-02 18:17:02,498 - INFO - [33mPress CTRL+C to quit[0m
+2024-12-02 18:17:02,499 - INFO -  * Restarting with stat
+2024-12-02 18:17:04,939 - INFO - ·Î±ë ¼³Á¤ÀÌ ¿Ï·áµÇ¾ú½À´Ï´Ù.
+2024-12-02 18:17:04,946 - WARNING -  * Debugger is active!
+2024-12-02 18:17:04,948 - INFO -  * Debugger PIN: 131-063-404
+2024-12-02 18:17:09,417 - INFO - 127.0.0.1 - - [02/Dec/2024 18:17:09] "GET /health/health HTTP/1.1" 200 -
+2024-12-02 18:17:11,684 - INFO - 127.0.0.1 - - [02/Dec/2024 18:17:11] "[33mGET /health HTTP/1.1[0m" 404 -
+2024-12-02 18:17:16,032 - INFO - 127.0.0.1 - - [02/Dec/2024 18:17:16] "GET /health/health HTTP/1.1" 200 -
+2024-12-02 18:17:22,170 - INFO -  * Detected change in 'C:\\work_oneteam\\sa_proj_flask\\app\\__init__.py', reloading
+2024-12-02 18:17:22,509 - INFO -  * Restarting with stat
+2024-12-02 18:17:26,990 - INFO - ·Î±ë ¼³Á¤ÀÌ ¿Ï·áµÇ¾ú½À´Ï´Ù.
+2024-12-02 18:17:27,001 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.2.17:5000
+2024-12-02 18:17:27,001 - INFO - [33mPress CTRL+C to quit[0m
+2024-12-02 18:17:27,002 - INFO -  * Restarting with stat
+2024-12-02 18:17:29,484 - INFO - ·Î±ë ¼³Á¤ÀÌ ¿Ï·áµÇ¾ú½À´Ï´Ù.
+2024-12-02 18:17:29,491 - WARNING -  * Debugger is active!
+2024-12-02 18:17:29,493 - INFO -  * Debugger PIN: 131-063-404
+2024-12-02 18:17:31,062 - INFO - 127.0.0.1 - - [02/Dec/2024 18:17:31] "GET /health HTTP/1.1" 200 -
+2024-12-02 18:17:35,619 - INFO - 127.0.0.1 - - [02/Dec/2024 18:17:35] "GET /health HTTP/1.1" 200 -
+2024-12-02 18:17:37,311 - INFO - 127.0.0.1 - - [02/Dec/2024 18:17:37] "GET /health HTTP/1.1" 200 -
+2024-12-02 18:17:37,325 - INFO - 127.0.0.1 - - [02/Dec/2024 18:17:37] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2024-12-02 18:18:25,692 - INFO - 127.0.0.1 - - [02/Dec/2024 18:18:25] "[33mPOST /process_video HTTP/1.1[0m" 404 -
+2024-12-02 18:21:57,549 - INFO - 127.0.0.1 - - [02/Dec/2024 18:21:57] "[33mPOST /process-image HTTP/1.1[0m" 404 -
+2024-12-02 18:22:03,248 - INFO - 127.0.0.1 - - [02/Dec/2024 18:22:03] "[33mPOST /process-image HTTP/1.1[0m" 404 -
+2024-12-02 18:22:05,333 - INFO - 127.0.0.1 - - [02/Dec/2024 18:22:05] "[33mPOST /process-image HTTP/1.1[0m" 404 -
+2024-12-02 18:22:08,173 - INFO - 127.0.0.1 - - [02/Dec/2024 18:22:08] "[33mPOST /process-image HTTP/1.1[0m" 404 -
+2024-12-02 18:28:10,889 - INFO - ·Î±ë ¼³Á¤ÀÌ ¿Ï·áµÇ¾ú½À´Ï´Ù.
+2024-12-02 18:28:10,900 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.2.17:5000
+2024-12-02 18:28:10,900 - INFO - [33mPress CTRL+C to quit[0m
+2024-12-02 18:28:10,901 - INFO -  * Restarting with stat
+2024-12-02 18:28:13,325 - INFO - ·Î±ë ¼³Á¤ÀÌ ¿Ï·áµÇ¾ú½À´Ï´Ù.
+2024-12-02 18:28:13,332 - WARNING -  * Debugger is active!
+2024-12-02 18:28:13,334 - INFO -  * Debugger PIN: 131-063-404
+2024-12-02 18:28:19,313 - INFO - 127.0.0.1 - - [02/Dec/2024 18:28:19] "[33mGET /health HTTP/1.1[0m" 404 -
+2024-12-02 18:28:19,332 - INFO - 127.0.0.1 - - [02/Dec/2024 18:28:19] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2024-12-02 18:28:21,822 - INFO - 127.0.0.1 - - [02/Dec/2024 18:28:21] "[33mGET /health HTTP/1.1[0m" 404 -
+2024-12-02 18:28:22,137 - INFO - 127.0.0.1 - - [02/Dec/2024 18:28:22] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2024-12-02 18:28:25,530 - INFO - 127.0.0.1 - - [02/Dec/2024 18:28:25] "[33mGET /health HTTP/1.1[0m" 404 -
+2024-12-02 18:28:25,544 - INFO - 127.0.0.1 - - [02/Dec/2024 18:28:25] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2024-12-02 18:28:41,992 - INFO - 127.0.0.1 - - [02/Dec/2024 18:28:41] "[33mGET /health HTTP/1.1[0m" 404 -
+2024-12-02 18:28:42,996 - INFO - 127.0.0.1 - - [02/Dec/2024 18:28:42] "[33mGET /health HTTP/1.1[0m" 404 -
+2024-12-02 18:28:43,008 - INFO - 127.0.0.1 - - [02/Dec/2024 18:28:43] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
