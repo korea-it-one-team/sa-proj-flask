@@ -4,7 +4,73 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1dbe71b5-ba07-4bd9-a1fb-bcdf39151471" name="Changes" comment="" />
+    <list default="true" id="1dbe71b5-ba07-4bd9-a1fb-bcdf39151471" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/app/static/video/processed_video.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/static/video/processed_video_h264.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/ffmpeg/LICENSE" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/ffmpeg/README.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/ffmpeg/bin/ffmpeg.exe" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/ffmpeg/bin/ffplay.exe" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/ffmpeg/bin/ffprobe.exe" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/ffmpeg/doc/bootstrap.min.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/ffmpeg/doc/community.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/ffmpeg/doc/default.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/ffmpeg/doc/developer.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/ffmpeg/doc/faq.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/ffmpeg/doc/fate.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/ffmpeg/doc/ffmpeg-all.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/ffmpeg/doc/ffmpeg-bitstream-filters.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/ffmpeg/doc/ffmpeg-codecs.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/ffmpeg/doc/ffmpeg-devices.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/ffmpeg/doc/ffmpeg-filters.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/ffmpeg/doc/ffmpeg-formats.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/ffmpeg/doc/ffmpeg-protocols.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/ffmpeg/doc/ffmpeg-resampler.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/ffmpeg/doc/ffmpeg-scaler.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/ffmpeg/doc/ffmpeg-utils.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/ffmpeg/doc/ffmpeg.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/ffmpeg/doc/ffplay-all.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/ffmpeg/doc/ffplay.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/ffmpeg/doc/ffprobe-all.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/ffmpeg/doc/ffprobe.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/ffmpeg/doc/general.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/ffmpeg/doc/git-howto.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/ffmpeg/doc/libavcodec.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/ffmpeg/doc/libavdevice.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/ffmpeg/doc/libavfilter.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/ffmpeg/doc/libavformat.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/ffmpeg/doc/libavutil.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/ffmpeg/doc/libswresample.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/ffmpeg/doc/libswscale.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/ffmpeg/doc/mailing-list-faq.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/ffmpeg/doc/nut.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/ffmpeg/doc/platform.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/ffmpeg/doc/style.min.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/ffmpeg/presets/libvpx-1080p.ffpreset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/ffmpeg/presets/libvpx-1080p50_60.ffpreset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/ffmpeg/presets/libvpx-360p.ffpreset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/ffmpeg/presets/libvpx-720p.ffpreset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/ffmpeg/presets/libvpx-720p50_60.ffpreset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/openh264-1.8.0-win64.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/uploads/temp_video_18f8e699b67f4c888b139a6e488ef4dc.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/uploads/temp_video_3aff71d423db49778815775a2743d7bf.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/uploads/temp_video_50dddb9b463b4d0eb0a886dca6c6f9c4.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/uploads/temp_video_5c652e94182b43d8a0a2feb64a6044dd.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/uploads/temp_video_6924e83f350542e284a6c820679fb74e.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/uploads/temp_video_773c76cf9bd44171a2f5403dece40399.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/uploads/temp_video_978c61eabf904029bcaa63aa34855168.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/uploads/temp_video_a52430b38fd74199995cbe019d6f74da.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/uploads/temp_video_d583a8ae038244bf82d232d5d71b220e.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/uploads/temp_video_ebdcc1ca0d9741e0b00a11f52e2264f1.mp4" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/services/video_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/video_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/utils/logger.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils/logger.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flask_app.log" beforeDir="false" afterPath="$PROJECT_DIR$/flask_app.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/run.py" beforeDir="false" afterPath="$PROJECT_DIR$/run.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />

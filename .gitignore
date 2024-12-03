@@ -8,3 +8,5 @@
 /dataSources.local.xml
 /venv/
 /libs/ffmpeg/
+/app/static/video/
+/uploads/
