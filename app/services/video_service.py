@@ -12,7 +12,6 @@ import numpy as np
 import threading
 import subprocess
 
-# 재커밋용 주석
 # 동영상 처리 시작 및 JSON 불러오기
 def process_video(request):
     # 요청에서 동영상과 팀 정보 받음

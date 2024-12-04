@@ -10,22 +10,28 @@ import json
 
 # JSON에서 팀 색상 로드
 # JSON 파일에서 팀 색상 로드 함수
-def load_team_colors(home_team, away_team):
+def load_team_colors(home_team_id, away_team_id):
     try:
         # 절대 경로로 JSON 파일을 지정
         json_path = os.path.join("app", "static", "data", "team_colors.json")
         with open(json_path, "r") as file:
             color_data = json.load(file)
 
+        # 팀 ID를 기준으로 검색
+        home_team_name = next((team for team, data in color_data.items() if str(data.get("teamID")) == home_team_id), None)
+        away_team_name = next((team for team, data in color_data.items() if str(data.get("teamID")) == away_team_id), None)
+
+        if not home_team_name or not away_team_name:
+            logging.info(f"Error: Could not find teams for IDs - Home: {home_team_id}, Away: {away_team_id}")
+            return False
+
         # 홈팀 색상 정보 가져오기
-        if home_team in color_data:
-            home_colors = color_data[home_team].get("home", {})
-            team_colors["home"] = extract_colors(home_colors)
+        home_colors = color_data[home_team_name].get("home", {})
+        team_colors["home"] = extract_colors(home_colors)
 
         # 원정팀 색상 정보 가져오기
-        if away_team in color_data:
-            away_colors = color_data[away_team].get("away", {})
-            team_colors["away"] = extract_colors(away_colors)
+        away_colors = color_data[away_team_name].get("away", {})
+        team_colors["away"] = extract_colors(away_colors)
 
         # 결과 출력 확인
         logging.info(f"Loaded colors - Home: {team_colors['home']}, Away: {team_colors['away']}")
