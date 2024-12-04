@@ -5,10 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1dbe71b5-ba07-4bd9-a1fb-bcdf39151471" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/sa_proj_flask.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sa_proj_flask.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/services/color_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/color_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/services/video_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/video_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flask_app.log" beforeDir="false" afterPath="$PROJECT_DIR$/flask_app.log" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,27 +30,32 @@
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Python.Flask App.executor&quot;: &quot;Run&quot;,
-    &quot;Python.app.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/work_oneteam/sa_proj_flask&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2633803&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python.Flask App.executor": "Run",
+    "Python.app.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/work_oneteam/sa-proj-flask/app/models",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2633803",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\work_oneteam\sa-proj-flask\app\models" />
+      <recent name="C:\work_oneteam\sa-proj-flask\app\services" />
+      <recent name="C:\work_oneteam\sa-proj-flask\app\routes" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\work_oneteam\sa_proj_flask\app" />
       <recent name="C:\work_oneteam\sa_proj_flask\app\static\data" />
@@ -71,7 +74,6 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="SDK_NAME" value="Python 3.12 (venv)" />
       <option name="WORKING_DIRECTORY" value="" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
@@ -112,6 +114,7 @@
       <workItem from="1733285094818" duration="857000" />
       <workItem from="1733287136173" duration="192000" />
       <workItem from="1733287782759" duration="955000" />
+      <workItem from="1733300970866" duration="1954000" />
     </task>
     <servers />
   </component>
