@@ -4,7 +4,7 @@ from app.services.action_video_service import process_video
 bp = Blueprint("video_action", __name__)
 
 @bp.route('/video_action', methods=['POST'])
-def study_video_route():
+def process_video_action_route():
     video_file = request.files.get('video')
     model_file = request.files.get('model')
     classes_file = request.files.get('classes')

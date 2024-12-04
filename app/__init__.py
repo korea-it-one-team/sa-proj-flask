@@ -3,6 +3,8 @@ from flask_cors import CORS
 from app.routes.health_routes import bp as health_bp
 from app.routes.image_routes import bp as image_bp
 from app.routes.video_routes import bp as video_bp
+from app.routes.action_video_routes import bp as video_action_bp
+from app.routes.study_routes import bp as study_bp
 from app.utils.logger import setup_logging
 
 def create_app():
@@ -19,6 +21,8 @@ def create_app():
     # 블루프린트 등록
     app.register_blueprint(image_bp, url_prefix="/image")
     app.register_blueprint(video_bp, url_prefix="/video")
+    app.register_blueprint(video_action_bp, url_prefix="/video_action")
+    app.register_blueprint(study_bp, url_prefix="/study")
     app.register_blueprint(health_bp)  # url_prefix 제거
 
     return app

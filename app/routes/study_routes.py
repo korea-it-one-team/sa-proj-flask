@@ -3,7 +3,7 @@ from app.services.study_service import train_model
 
 bp = Blueprint("study", __name__)
 
-@bp.route('/video_study', methods=['POST'])
+@bp.route('/study', methods=['POST'])
 def study_video_route():
     """
     TSN 모델 학습 요청을 처리하는 라우트
