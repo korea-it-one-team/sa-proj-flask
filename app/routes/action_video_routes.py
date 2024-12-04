@@ -1,9 +1,9 @@
 from flask import Blueprint, request, jsonify, send_file
 from app.services.action_video_service import process_video
 
-bp = Blueprint("study", __name__)
+bp = Blueprint("video_action", __name__)
 
-@bp.route('/video_study', methods=['POST'])
+@bp.route('/video_action', methods=['POST'])
 def study_video_route():
     video_file = request.files.get('video')
     model_file = request.files.get('model')
