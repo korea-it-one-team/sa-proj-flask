@@ -1,8 +1,12 @@
+import torch
+from zmq.utils.garbage import gc
+
 from app.services.color_service import load_team_colors
 from app.services.color_service import identify_uniform_color_per_person
 from app.services.field_service import detect_green_field_low_res
 from app.services.model_loader import model
-from app.services.state_manager import processing_status, team_colors
+from app.services.state_manager import processing_status, team_colors, set_initial_objects, initial_objects
+from app.services.yolo_service import detect_objects_with_yolo
 import os
 import uuid
 from flask import send_file, jsonify
@@ -49,28 +53,44 @@ def process_video(request):
     processing_status['progress'] = 0
 
     # 동영상 처리 비동기 스레드에서 실행
-    threading.Thread(target=update_status, args=(video_path,)).start()
+    threading.Thread(target=update_status, args=(video_path, model)).start()
 
     return jsonify({"message": "동영상 처리를 시작했습니다."})
-
-# 다운로드 처리
-def download_video():
-    video_path = os.path.join("C:/work_oneteam/sa_proj_flask/app/static/video", "processed_video_h264.mp4")
-
-    # 동영상 파일을 다운로드하여 클라이언트로 전송
-    return send_file(video_path, as_attachment=True)
 
 # 비디오 처리 상태 반환
 def video_status():
     return jsonify(processing_status)
 
-# 비디오 상태 업데이트
-def update_status(video_path):
+# 동영상 처리 로직
+def update_status(video_path, model):
+    try:
+        logging.info("Starting video processing...")
+        # save_path 디렉터리 존재 확인 및 생성
+        save_path = os.path.join("C:/work_oneteam/sa_proj_flask/app/static/video", "processed_video.mp4")
+        os.makedirs(os.path.dirname(save_path), exist_ok=True)
+
+        # 1. 초기화
+        logging.info("Initializing video processing...")
+        cap, out, state = initialize_video_processing(video_path, model, save_path)
+
+        # 2. 프레임 처리
+        logging.info("Processing video frames...")
+        process_video_frames(cap, out, state)
+
+        # 3. 처리 후 저장
+        logging.info("Finalizing video processing...")
+        finalize_video_processing(cap, out, save_path, video_path)
+    except Exception as e:
+        logging.error(f"Error during video processing: {e}")
+        processing_status['status'] = "error"
+        raise e
+
+def initialize_video_processing(video_path, model, save_path):
+    # cap open
     cap = cv2.VideoCapture(video_path)
     if not cap.isOpened():
-        logging.error("Error: Could not open video file.")
         processing_status['status'] = "error"
-        return
+        raise ValueError("Could not open video file.")
 
     # 팀 색상 초기화 확인
     if team_colors["home"] is None or team_colors["away"] is None:
@@ -78,31 +98,47 @@ def update_status(video_path):
         processing_status['status'] = "error"
         return
 
-    save_path = os.path.join("C:/work_oneteam/sa_proj_flask/app/static/video", "processed_video.mp4")
-
-    # 디렉터리 존재 확인 및 생성
-    video_dir = os.path.dirname(save_path)
-    if not os.path.exists(video_dir):
-        os.makedirs(video_dir, exist_ok=True)  # 디렉터리 생성
-
     # 해상도 확인
-    width = int(cap.get(3))
-    height = int(cap.get(4))
+    width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+    height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
     if width <= 0 or height <= 0:
-        logging.error("Invalid video resolution: width or height is zero.")
         processing_status['status'] = "error"
-        return
+        raise ValueError("Invalid video resolution: width or height is zero.")
 
     # VideoWriter 초기화
-    fourcc = cv2.VideoWriter_fourcc(*'mp4v')  # 'mp4v' 사용
-    out = cv2.VideoWriter(save_path, fourcc, 20.0, (int(cap.get(3)), int(cap.get(4))))
+    fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+    out = cv2.VideoWriter(save_path, fourcc, 20.0, (width, height))
 
     # VideoWriter 열림 상태 확인
     if not out.isOpened():
-        logging.error(f"Error: cv2.VideoWriter failed to open. Check codec or path: {save_path}")
-        processing_status['status'] = "error"
-        return
+        raise ValueError(f"Could not initialize VideoWriter for path: {save_path}")
 
+    # 첫 프레임에서 프롬프트 생성
+    ret, frame = cap.read()
+    if not ret:
+        raise ValueError("Failed to read the first frame from the video.")
+
+    # YOLO로 프롬프트 생성
+    prompts = detect_objects_with_yolo(frame)
+
+    video_capture = cv2.VideoCapture(video_path)
+    frame_width = int(video_capture.get(cv2.CAP_PROP_FRAME_WIDTH))
+    frame_height = int(video_capture.get(cv2.CAP_PROP_FRAME_HEIGHT))
+    video_capture.release()
+
+    print(f"Frame dimensions: {frame_width}x{frame_height}")
+    if frame_width > 640 or frame_height > 480:
+        print("Warning: Frame size is large. Consider resizing.")
+
+    # SAMURAI 상태 초기화
+    state = model.init_state(video_path, offload_video_to_cpu=True, async_loading_frames=False)
+    set_initial_objects(state, prompts)
+
+    print("Allocated memory:", torch.cuda.memory_allocated() / 1024 ** 3, "GB")
+    print("Reserved memory:", torch.cuda.memory_reserved() / 1024 ** 3, "GB")
+    return cap, out, state
+
+def process_video_frames(cap, out, state):
     total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
     processed_frames = 0
 
@@ -111,34 +147,44 @@ def update_status(video_path):
         if not ret:
             break
 
-        # 필드 영역 감지
+        # 프레임 크기 축소
+        frame = cv2.resize(frame, (frame.shape[1] // 2, frame.shape[0] // 2))
+
+        # 필드 감지
         field_contour = detect_green_field_low_res(frame)
         if field_contour is not None:
-            cv2.drawContours(frame, [field_contour], -1, (0, 255, 255), 2)  # 필드 영역을 노란색으로 표시
+            cv2.drawContours(frame, [field_contour], -1, (0, 255, 255), 2)
 
-        # 객체 탐지
-        results = model(frame)
-        for result in results:
-            for box in result.boxes:
-                bx1, by1, bx2, by2 = map(int, box.xyxy[0])
+        try:
+            _, object_ids, masks = model.propagate_in_video(state)
+            for obj_id, mask in zip(object_ids, masks):
+                # 마스크 및 바운딩 박스 계산
+                mask = mask[0].cpu().numpy()
+                mask = mask > 0.0
+                non_zero_indices = np.argwhere(mask)
+                if len(non_zero_indices) > 0:
+                    y_min, x_min = non_zero_indices.min(axis=0).tolist()
+                    y_max, x_max = non_zero_indices.max(axis=0).tolist()
+                    bbox = [x_min, y_min, x_max - x_min, y_max - y_min]
 
-                # 공과 선수의 필드 내 포함 여부 확인
-                if box.cls == 32 and cv2.pointPolygonTest(field_contour, ((bx1 + bx2) // 2, (by1 + by2) // 2), False) >= 0:
-                    cv2.rectangle(frame, (bx1, by1), (bx2, by2), (0, 255, 0), 2)  # 공을 초록색 사각형으로 표시
-
-                elif box.cls == 0 and cv2.pointPolygonTest(field_contour, ((bx1 + bx2) // 2, (by1 + by2) // 2), False) >= 0:
-                    player_crop = frame[by1:by2, bx1:bx2]
-                    team = identify_uniform_color_per_person(player_crop, team_colors["home"], team_colors["away"])
-
-                    # 팀 판별 결과에 따른 박스 색상 결정
-                    if team == "home_team":
-                        cv2.rectangle(frame, (bx1, by1), (bx2, by2), (0, 0, 255), 2)  # 홈팀은 빨간색
-                    elif team == "away_team":
-                        cv2.rectangle(frame, (bx1, by1), (bx2, by2), (255, 0, 0), 2)  # 원정팀은 파란색
-                    else:
-                        cv2.rectangle(frame, (bx1, by1), (bx2, by2), (0, 0, 0), 2)  # 인식되지 않은 선수는 검은색
-
-                    logging.info(f"Player color detected: {team}")
+                    center_x, center_y = (x_min + x_max) // 2, (y_min + y_max) // 2
+                    if cv2.pointPolygonTest(field_contour, (center_x, center_y), False) >= 0:
+                        if is_ball(obj_id):
+                            cv2.rectangle(frame, (bbox[0], bbox[1]), (bbox[0] + bbox[2], bbox[1] + bbox[3]), (0, 255, 0), 2)
+                        else:
+                            player_crop = frame[bbox[1]:bbox[1] + bbox[3], bbox[0]:bbox[0] + bbox[2]]
+                            team = identify_uniform_color_per_person(player_crop, team_colors["home"], team_colors["away"])
+                            # 팀별 박스 색상
+                            if team == "home_team":
+                                cv2.rectangle(frame, (bbox[0], bbox[1]), (bbox[0] + bbox[2], bbox[1] + bbox[3]), (0, 0, 255), 2)  # 빨간색
+                            elif team == "away_team":
+                                cv2.rectangle(frame, (bbox[0], bbox[1]), (bbox[0] + bbox[2], bbox[1] + bbox[3]), (255, 0, 0), 2)  # 파란색
+                            else:
+                                cv2.rectangle(frame, (bbox[0], bbox[1]), (bbox[0] + bbox[2], bbox[1] + bbox[3]), (0, 0, 0), 2)  # 검은색
+        except Exception as e:
+            logging.error(f"Error during SAMURAI tracking: {e}")
+            processing_status['status'] = "error"
+            return
 
         # 처리된 프레임 저장 및 진행률 업데이트
         try:
@@ -149,21 +195,18 @@ def update_status(video_path):
             processing_status['status'] = "error"
             return
 
+        # 주기적으로 GPU 캐시 정리
+        if processed_frames % 10 == 0:  # 10 프레임마다 실행
+            torch.cuda.empty_cache()
+            gc.collect()
+
         processed_frames += 1
         processing_status['progress'] = int((processed_frames / total_frames) * 100)
 
-    logging.info("Video processing completed, now saving...")
-
-    # 비디오 리소스 해제
+def finalize_video_processing(cap, out, save_path, video_path):
     cap.release()
     out.release()
-
-    # 비디오 저장 상태 확인 및 최종 처리
-    try:
-        verify_and_finalize_save(save_path, video_path)
-    except Exception as e:
-        logging.error(f"Error during video save finalization: {e}")
-        processing_status['status'] = "error"
+    verify_and_finalize_save(save_path, video_path)
 
 def verify_and_finalize_save(save_path, video_path):
     """
@@ -236,3 +279,24 @@ def convert_to_h264(input_path, output_path):
     except subprocess.CalledProcessError as e:
         logging.error(f"FFmpeg 변환 실패: {e}")
         raise e
+
+# 다운로드 처리
+def download_video():
+    # SAMURAI 처리된 동영상 경로
+    processed_video_dir = "C:/work_oneteam/sa_proj_flask/app/static/video"
+    processed_video_filename = "processed_video_h264.mp4"
+    video_path = os.path.join(processed_video_dir, processed_video_filename)
+
+    # 동영상 파일을 다운로드하여 클라이언트로 전송
+    if not os.path.exists(video_path):
+        return jsonify({"error": "Processed video file not found."}), 404
+
+    return send_file(video_path, as_attachment=True)
+
+def is_ball(obj_id):
+    """
+    객체 ID를 기반으로 해당 객체가 공인지 여부를 반환합니다.
+    """
+    # initial_objects에서 ID 조회, 기본값은 "unknown"
+    object_type = initial_objects.get(obj_id, "unknown")
+    return object_type == "basketball"
