@@ -10,4 +10,19 @@
 /libs/ffmpeg/
 /app/static/video/
 /uploads/
-/samurai/
+
+# Ignore everything in the samurai directory
+app/samurai/*
+app/samurai/**
+
+# Except Python files
+!app/samurai/**/*.py
+!app/samurai/**/*.pyc
+
+# Ensure directories are tracked
+!app/samurai/**/
+
+# Exclude specific files or folders from tracking (if needed)
+# Example: Ignore compiled Python files
+*.pyc
+__pycache__/
