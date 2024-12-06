@@ -1,16 +1,6 @@
-2024-12-05 16:36:58,687 - INFO - 로깅 설정이 완료되었습니다.
-2024-12-05 16:36:58,697 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+2024-12-06 16:50:29,300 - INFO - 로깅 설정이 완료되었습니다.
+2024-12-06 16:50:29,324 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
  * Running on all addresses (0.0.0.0)
  * Running on http://127.0.0.1:5000
  * Running on http://192.168.2.17:5000
-2024-12-05 16:36:58,697 - INFO - [33mPress CTRL+C to quit[0m
-2024-12-05 16:37:18,150 - INFO - Received home_team: 1, away_team: 12
-2024-12-05 16:37:18,151 - INFO - Extracted color for primary_color: [232, 36, 52]
-2024-12-05 16:37:18,151 - INFO - Extracted color for secondary_color: [255, 255, 255]
-2024-12-05 16:37:18,151 - INFO - Extracted color for primary_color: [27, 27, 25]
-2024-12-05 16:37:18,151 - INFO - Extracted color for secondary_color: [69, 208, 207]
-2024-12-05 16:37:18,151 - INFO - Extracted color for third_color: [243, 242, 235]
-2024-12-05 16:37:18,152 - INFO - Loaded colors - Home: [array([232,  36,  52]), array([255, 255, 255])], Away: [array([27, 27, 25]), array([ 69, 208, 207]), array([243, 242, 235])]
-2024-12-05 16:37:18,314 - INFO - Starting video processing...
-2024-12-05 16:37:18,317 - INFO - Initializing video processing...
-2024-12-05 16:37:18,321 - INFO - 127.0.0.1 - - [05/Dec/2024 16:37:18] "POST /video/process_video HTTP/1.1" 200 -
+2024-12-06 16:50:29,324 - INFO - [33mPress CTRL+C to quit[0m

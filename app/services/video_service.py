@@ -5,16 +5,19 @@ from app.services.color_service import load_team_colors
 from app.services.color_service import identify_uniform_color_per_person
 from app.services.field_service import detect_green_field_low_res
 from app.services.model_loader import model
-from app.services.state_manager import processing_status, team_colors, set_initial_objects, initial_objects
+from app.services.state_manager import processing_status, team_colors, initial_objects
 from app.services.yolo_service import detect_objects_with_yolo
 import os
 import uuid
 from flask import send_file, jsonify
 import logging
-import cv2 #openCV
+import cv2  #openCV
 import numpy as np
 import threading
 import subprocess
+
+from sam2.utils.misc import load_video_frames_from_video_file
+
 
 # 동영상 처리 시작 및 JSON 불러오기
 def process_video(request):
@@ -57,40 +60,38 @@ def process_video(request):
 
     return jsonify({"message": "동영상 처리를 시작했습니다."})
 
+
 # 비디오 처리 상태 반환
 def video_status():
     return jsonify(processing_status)
+
 
 # 동영상 처리 로직
 def update_status(video_path, model):
     try:
         logging.info("Starting video processing...")
-        # save_path 디렉터리 존재 확인 및 생성
         save_path = os.path.join("C:/work_oneteam/sa_proj_flask/app/static/video", "processed_video.mp4")
         os.makedirs(os.path.dirname(save_path), exist_ok=True)
 
-        # 1. 초기화
+        # 1. 초기화 및 배치별 프레임 로드
         logging.info("Initializing video processing...")
-        cap, out, state = initialize_video_processing(video_path, model, save_path)
+        frame_batches, out, state = initialize_video_processing(video_path, model, save_path)
 
-        # 2. 프레임 처리
+        # 2. 프레임 처리 (배치별)
         logging.info("Processing video frames...")
-        process_video_frames(cap, out, state)
+        process_video_frames(frame_batches, out, state)
 
         # 3. 처리 후 저장
         logging.info("Finalizing video processing...")
-        finalize_video_processing(cap, out, save_path, video_path)
+        finalize_video_processing(out, save_path, video_path)
     except Exception as e:
         logging.error(f"Error during video processing: {e}")
         processing_status['status'] = "error"
         raise e
 
+
 def initialize_video_processing(video_path, model, save_path):
-    # cap open
-    cap = cv2.VideoCapture(video_path)
-    if not cap.isOpened():
-        processing_status['status'] = "error"
-        raise ValueError("Could not open video file.")
+    logging.info("Initializing video processing...")
 
     # 팀 색상 초기화 확인
     if team_colors["home"] is None or team_colors["away"] is None:
@@ -99,114 +100,170 @@ def initialize_video_processing(video_path, model, save_path):
         return
 
     # 해상도 확인
-    width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-    height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-    if width <= 0 or height <= 0:
-        processing_status['status'] = "error"
-        raise ValueError("Invalid video resolution: width or height is zero.")
-
-    # VideoWriter 초기화
-    fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-    out = cv2.VideoWriter(save_path, fourcc, 20.0, (width, height))
-
-    # VideoWriter 열림 상태 확인
-    if not out.isOpened():
-        raise ValueError(f"Could not initialize VideoWriter for path: {save_path}")
-
-    # 첫 프레임에서 프롬프트 생성
-    ret, frame = cap.read()
-    if not ret:
-        raise ValueError("Failed to read the first frame from the video.")
-
-    # YOLO로 프롬프트 생성
-    prompts = detect_objects_with_yolo(frame)
-
     video_capture = cv2.VideoCapture(video_path)
     frame_width = int(video_capture.get(cv2.CAP_PROP_FRAME_WIDTH))
     frame_height = int(video_capture.get(cv2.CAP_PROP_FRAME_HEIGHT))
     video_capture.release()
 
-    print(f"Frame dimensions: {frame_width}x{frame_height}")
+    if frame_width <= 0 or frame_height <= 0:
+        processing_status['status'] = "error"
+        raise ValueError("Invalid video resolution: width or height is zero.")
+
+    logging.info(f"Video resolution: {frame_width}x{frame_height}")
     if frame_width > 640 or frame_height > 480:
-        print("Warning: Frame size is large. Consider resizing.")
+        logging.warning("Warning: Frame size is large. Consider resizing.")
 
-    # SAMURAI 상태 초기화
-    state = model.init_state(video_path, offload_video_to_cpu=True, async_loading_frames=False)
-    set_initial_objects(state, prompts)
+    # VideoWriter 초기화
+    fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+    out = cv2.VideoWriter(save_path, fourcc, 20.0, (frame_width, frame_height))
+    if not out.isOpened():
+        raise ValueError(f"Could not initialize VideoWriter for path: {save_path}")
 
-    print("Allocated memory:", torch.cuda.memory_allocated() / 1024 ** 3, "GB")
-    print("Reserved memory:", torch.cuda.memory_reserved() / 1024 ** 3, "GB")
-    return cap, out, state
+    # 동영상 로드 및 프레임 배치 처리
+    batch_size = 32  # 배치 크기
+    offload_video_to_cpu = True  # CPU로 처리 여부 설정
 
-def process_video_frames(cap, out, state):
-    total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+    adjusted_height, adjusted_width = adjust_resolution(frame_height, frame_width)
+    logging.info(f"Adjusted resolution for SAMURAI compatibility: {adjusted_height}x{adjusted_width}")
+
+    # 프레임 리사이즈 적용
+    frame_batches, resize_height, resize_width = load_video_frames_from_video_file(
+        video_path,
+        (adjusted_height, adjusted_width),  # 모델과 호환되는 해상도 전달
+        offload_video_to_cpu,
+        batch_size=batch_size,
+    )
+
+    logging.info(f"Loaded {len(frame_batches)} batches of frames with size {resize_width}x{resize_height}.")
+
+    # 첫 프레임에서 YOLO로 프롬프트 생성
+    video_capture = cv2.VideoCapture(video_path)
+    ret, frame = video_capture.read()
+    video_capture.release()
+    if not ret:
+        raise ValueError("Failed to read the first frame from the video.")
+
+    prompts = detect_objects_with_yolo(frame)
+
+    if not prompts:
+        logging.error("Error: YOLO failed to detect objects or generate prompts.")
+        return
+
+    logging.info("YOLO prompts created successfully.")
+    logging.info(f"Generated prompts: {prompts}")
+
+    # SAMURAI 상태 초기화에 배치와 리사이즈 정보를 전달
+    state = model.init_state_with_batches(
+        frame_batches=frame_batches,
+        video_height=resize_height,
+        video_width=resize_width,
+        prompts=prompts,
+        offload_video_to_cpu=True,
+        async_loading_frames=False,
+    )
+    logging.info("SAMURAI model state initialized successfully.")
+
+    # GPU 메모리 정보 출력
+    logging.info(f"Allocated memory: {torch.cuda.memory_allocated() / 1024 ** 3:.3f} GB")
+    logging.info(f"Reserved memory: {torch.cuda.memory_reserved() / 1024 ** 3:.3f} GB")
+
+    # VideoWriter는 그대로 반환하고, frame_batches와 state도 반환
+    return frame_batches, out, state
+
+
+def process_video_frames(frame_batches, out, state):
+    """
+    Process video frames in batches.
+    """
+    total_frames = sum(batch.shape[0] for batch in frame_batches)  # 전체 프레임 수 계산
     processed_frames = 0
 
-    while cap.isOpened():
-        ret, frame = cap.read()
-        if not ret:
-            break
+    for batch_idx, frames in enumerate(frame_batches):
+        logging.info(f"Processing batch {batch_idx + 1} / {len(frame_batches)}...")
 
-        # 프레임 크기 축소
-        frame = cv2.resize(frame, (frame.shape[1] // 2, frame.shape[0] // 2))
+        for frame_idx, frame in enumerate(frames):
+            # 배치 내 각 프레임을 numpy 배열로 변환
+            frame = (frame.permute(1, 2, 0).cpu().numpy() * 255).astype(np.uint8)
 
-        # 필드 감지
-        field_contour = detect_green_field_low_res(frame)
-        if field_contour is not None:
-            cv2.drawContours(frame, [field_contour], -1, (0, 255, 255), 2)
+            # 프레임 크기 축소
+            frame = cv2.resize(frame, (frame.shape[1] // 2, frame.shape[0] // 2))
 
-        try:
-            _, object_ids, masks = model.propagate_in_video(state)
-            for obj_id, mask in zip(object_ids, masks):
-                # 마스크 및 바운딩 박스 계산
-                mask = mask[0].cpu().numpy()
-                mask = mask > 0.0
-                non_zero_indices = np.argwhere(mask)
-                if len(non_zero_indices) > 0:
-                    y_min, x_min = non_zero_indices.min(axis=0).tolist()
-                    y_max, x_max = non_zero_indices.max(axis=0).tolist()
-                    bbox = [x_min, y_min, x_max - x_min, y_max - y_min]
+            # 필드 감지
+            field_contour = detect_green_field_low_res(frame)
+            if field_contour is not None:
+                cv2.drawContours(frame, [field_contour], -1, (0, 255, 255), 2)
 
-                    center_x, center_y = (x_min + x_max) // 2, (y_min + y_max) // 2
-                    if cv2.pointPolygonTest(field_contour, (center_x, center_y), False) >= 0:
-                        if is_ball(obj_id):
-                            cv2.rectangle(frame, (bbox[0], bbox[1]), (bbox[0] + bbox[2], bbox[1] + bbox[3]), (0, 255, 0), 2)
-                        else:
-                            player_crop = frame[bbox[1]:bbox[1] + bbox[3], bbox[0]:bbox[0] + bbox[2]]
-                            team = identify_uniform_color_per_person(player_crop, team_colors["home"], team_colors["away"])
-                            # 팀별 박스 색상
-                            if team == "home_team":
-                                cv2.rectangle(frame, (bbox[0], bbox[1]), (bbox[0] + bbox[2], bbox[1] + bbox[3]), (0, 0, 255), 2)  # 빨간색
-                            elif team == "away_team":
-                                cv2.rectangle(frame, (bbox[0], bbox[1]), (bbox[0] + bbox[2], bbox[1] + bbox[3]), (255, 0, 0), 2)  # 파란색
+            try:
+                # SAMURAI 모델로 객체 추적
+                logging.info(f"Calling propagate_in_video with cond_frame_outputs: {state['output_dict']['cond_frame_outputs']}")
+                _, object_ids, masks = model.propagate_in_video(state)
+
+                logging.info(f"Object IDs detected: {object_ids}")
+                logging.info(f"Number of masks received: {len(masks)}")
+
+                for obj_id, mask in zip(object_ids, masks):
+                    # 마스크 및 바운딩 박스 계산
+                    mask = mask[0].cpu().numpy()
+                    mask = mask > 0.0
+                    non_zero_indices = np.argwhere(mask)
+                    if len(non_zero_indices) > 0:
+                        y_min, x_min = non_zero_indices.min(axis=0).tolist()
+                        y_max, x_max = non_zero_indices.max(axis=0).tolist()
+                        bbox = [x_min, y_min, x_max - x_min, y_max - y_min]
+
+                        center_x, center_y = (x_min + x_max) // 2, (y_min + y_max) // 2
+                        if cv2.pointPolygonTest(field_contour, (center_x, center_y), False) >= 0:
+                            if is_ball(obj_id):
+                                cv2.rectangle(frame, (bbox[0], bbox[1]), (bbox[0] + bbox[2], bbox[1] + bbox[3]),
+                                              (0, 255, 0), 2)
                             else:
-                                cv2.rectangle(frame, (bbox[0], bbox[1]), (bbox[0] + bbox[2], bbox[1] + bbox[3]), (0, 0, 0), 2)  # 검은색
-        except Exception as e:
-            logging.error(f"Error during SAMURAI tracking: {e}")
-            processing_status['status'] = "error"
-            return
+                                player_crop = frame[bbox[1]:bbox[1] + bbox[3], bbox[0]:bbox[0] + bbox[2]]
+                                team = identify_uniform_color_per_person(player_crop, team_colors["home"],
+                                                                         team_colors["away"])
+                                # 팀별 박스 색상
+                                if team == "home_team":
+                                    cv2.rectangle(frame, (bbox[0], bbox[1]), (bbox[0] + bbox[2], bbox[1] + bbox[3]),
+                                                  (0, 0, 255), 2)  # 빨간색
+                                elif team == "away_team":
+                                    cv2.rectangle(frame, (bbox[0], bbox[1]), (bbox[0] + bbox[2], bbox[1] + bbox[3]),
+                                                  (255, 0, 0), 2)  # 파란색
+                                else:
+                                    cv2.rectangle(frame, (bbox[0], bbox[1]), (bbox[0] + bbox[2], bbox[1] + bbox[3]),
+                                                  (0, 0, 0), 2)  # 검은색
+            except Exception as e:
+                logging.error(f"Error during SAMURAI tracking: {e}")
+                processing_status['status'] = "error"
+                return
 
-        # 처리된 프레임 저장 및 진행률 업데이트
-        try:
-            out.write(frame)
-            logging.info(f"Frame {processed_frames + 1} saved")
-        except Exception as frame_err:
-            logging.error(f"Error saving frame {processed_frames + 1}: {frame_err}")
-            processing_status['status'] = "error"
-            return
+            # 처리된 프레임 저장 및 로그
+            try:
+                out.write(frame)
+                logging.info(f"Batch {batch_idx + 1}, Frame {frame_idx + 1} saved.")
+            except Exception as frame_err:
+                logging.error(f"Error saving frame in batch {batch_idx + 1}, frame {frame_idx + 1}: {frame_err}")
+                processing_status['status'] = "error"
+                return
+
+            processed_frames += 1
+            processing_status['progress'] = int((processed_frames / total_frames) * 100)
 
         # 주기적으로 GPU 캐시 정리
-        if processed_frames % 10 == 0:  # 10 프레임마다 실행
-            torch.cuda.empty_cache()
-            gc.collect()
+        torch.cuda.empty_cache()
+        gc.collect()
 
-        processed_frames += 1
-        processing_status['progress'] = int((processed_frames / total_frames) * 100)
+    logging.info("All video frames processed successfully.")
 
-def finalize_video_processing(cap, out, save_path, video_path):
-    cap.release()
+
+def finalize_video_processing(out, save_path, video_path):
+    """
+    비디오 처리 후 저장 상태를 확인하고 최종 작업을 수행.
+    """
+    # VideoWriter 해제
     out.release()
+
+    # 비디오 저장 확인 및 후처리
     verify_and_finalize_save(save_path, video_path)
+
 
 def verify_and_finalize_save(save_path, video_path):
     """
@@ -262,6 +319,7 @@ def verify_and_finalize_save(save_path, video_path):
         except Exception as delete_err:
             logging.error(f"Error deleting original video file: {delete_err}")
 
+
 def convert_to_h264(input_path, output_path):
     """FFmpeg를 사용하여 비디오를 H.264로 변환"""
     ffmpeg_path = r'C:\work_oneteam\sa_proj_flask\libs\ffmpeg\bin\ffmpeg.exe'  # FFmpeg 경로
@@ -270,7 +328,7 @@ def convert_to_h264(input_path, output_path):
         '-i', input_path,
         '-c:v', 'libx264',  # H.264 코덱
         '-preset', 'fast',  # 인코딩 속도 설정
-        '-crf', '23',       # 품질 설정 (낮을수록 고품질)
+        '-crf', '23',  # 품질 설정 (낮을수록 고품질)
         output_path
     ]
     try:
@@ -279,6 +337,7 @@ def convert_to_h264(input_path, output_path):
     except subprocess.CalledProcessError as e:
         logging.error(f"FFmpeg 변환 실패: {e}")
         raise e
+
 
 # 다운로드 처리
 def download_video():
@@ -293,6 +352,7 @@ def download_video():
 
     return send_file(video_path, as_attachment=True)
 
+
 def is_ball(obj_id):
     """
     객체 ID를 기반으로 해당 객체가 공인지 여부를 반환합니다.
@@ -300,3 +360,22 @@ def is_ball(obj_id):
     # initial_objects에서 ID 조회, 기본값은 "unknown"
     object_type = initial_objects.get(obj_id, "unknown")
     return object_type == "basketball"
+
+
+# Adjust image size to be compatible with SAMURAI model
+def adjust_resolution(height, width, target_width=640, patch_size=16):
+    """
+    Adjust resolution by:
+    1. Scaling down to fit within target_width (maintaining aspect ratio).
+    2. Rounding down to the nearest multiple of patch_size.
+    """
+    # 1. Scale down to fit within target width
+    scaling_factor = target_width / width
+    scaled_height = int(height * scaling_factor)
+    scaled_width = target_width
+
+    # 2. Adjust to the nearest multiple of patch_size
+    adjusted_height = (scaled_height // patch_size) * patch_size
+    adjusted_width = (scaled_width // patch_size) * patch_size
+
+    return adjusted_height, adjusted_width
