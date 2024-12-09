@@ -1,4 +1,5 @@
 import logging
+import matplotlib
 
 def setup_logging():
     """로깅 설정"""
@@ -25,5 +26,9 @@ def setup_logging():
     console_formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
     console_handler.setFormatter(console_formatter)
     logger.addHandler(console_handler)
+
+    # Matplotlib의 디버그 로그 숨기기
+    matplotlib_logger = logging.getLogger('matplotlib')
+    matplotlib_logger.setLevel(logging.WARNING)  # WARNING 이상의 메시지만 출력
 
     logging.info("로깅 설정이 완료되었습니다.")
