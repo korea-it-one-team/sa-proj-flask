@@ -5,7 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1dbe71b5-ba07-4bd9-a1fb-bcdf39151471" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/samurai" beforeDir="false" afterPath="$PROJECT_DIR$/app/samurai" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/samurai/sam2/sam2/build_sam.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/samurai/sam2/sam2/build_sam.py" afterDir="false" />
@@ -13,6 +12,10 @@
       <change beforePath="$PROJECT_DIR$/app/samurai/sam2/sam2/sam2_video_predictor.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/samurai/sam2/sam2/sam2_video_predictor.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/samurai/sam2/sam2/utils/misc.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/samurai/sam2/sam2/utils/misc.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/samurai/scripts/main_inference.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/samurai/scripts/main_inference.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/services/model_loader.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/model_loader.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/services/state_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/state_manager.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/services/video_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/video_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flask_app.log" beforeDir="false" afterPath="$PROJECT_DIR$/flask_app.log" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,7 +41,7 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/app/samurai" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 5
@@ -55,7 +58,7 @@
     "Python.Flask App.executor": "Run",
     "Python.app.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "feature-lyj",
+    "git-widget-placeholder": "master",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/work_oneteam/sa_proj_flask",
@@ -143,7 +146,8 @@
       <workItem from="1733448338100" duration="18642000" />
       <workItem from="1733470518981" duration="266000" />
       <workItem from="1733470797042" duration="413000" />
-      <workItem from="1733471221253" duration="425000" />
+      <workItem from="1733471221253" duration="446000" />
+      <workItem from="1733704126236" duration="1132000" />
     </task>
     <servers />
   </component>
@@ -155,7 +159,7 @@
     <select />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/sa_proj_flask$Flask_App.coverage" NAME="Flask App Coverage Results" MODIFIED="1733471426514" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/sa_proj_flask$Flask_App.coverage" NAME="Flask App Coverage Results" MODIFIED="1733704992898" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/sa_proj_flask$app.coverage" NAME="app Coverage Results" MODIFIED="1733124488816" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/app" />
   </component>
 </project>

@@ -1,4 +1,6 @@
 import os
+import traceback
+import logging
 from sam2.build_sam import build_sam2_video_predictor
 
 # 경로 설정
@@ -26,12 +28,14 @@ def initialize_model(device="cuda:0"):
         device=device,
         async_loading_frames=False,
     )
+
+    logging.info(f"SAM image embedding size: {model.sam_image_embedding_size}")
     print("Model initialized successfully!")
     return model
 
-# 전역 모델 초기화
 try:
     model = initialize_model()
 except Exception as e:
     print(f"Error initializing SAMURAI model: {e}")
+    traceback.print_exc()  # 에러 스택 트레이스를 출력
     model = None

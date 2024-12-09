@@ -5,7 +5,7 @@ from app.services.color_service import load_team_colors
 from app.services.color_service import identify_uniform_color_per_person
 from app.services.field_service import detect_green_field_low_res
 from app.services.model_loader import model
-from app.services.state_manager import processing_status, team_colors, initial_objects
+from app.services.state_manager import processing_status, team_colors, initial_objects, set_initial_objects
 from app.services.yolo_service import detect_objects_with_yolo
 import os
 import uuid
@@ -123,10 +123,13 @@ def initialize_video_processing(video_path, model, save_path):
     batch_size = 32  # 배치 크기
     offload_video_to_cpu = True  # CPU로 처리 여부 설정
 
+    # 해상도를 모델 사양에 맞게 조정
     adjusted_height, adjusted_width = adjust_resolution(frame_height, frame_width)
-    logging.info(f"Adjusted resolution for SAMURAI compatibility: {adjusted_height}x{adjusted_width}")
 
-    # 프레임 리사이즈 적용
+    logging.info(f"Adjusted resolution: {adjusted_height}x{adjusted_width}")
+
+    # 강제로 조정된 해상도로 프레임 리사이즈
+    logging.info(f"Resizing frames to {adjusted_width}x{adjusted_height} for SAMURAI compatibility.")
     frame_batches, resize_height, resize_width = load_video_frames_from_video_file(
         video_path,
         (adjusted_height, adjusted_width),  # 모델과 호환되는 해상도 전달
@@ -136,14 +139,18 @@ def initialize_video_processing(video_path, model, save_path):
 
     logging.info(f"Loaded {len(frame_batches)} batches of frames with size {resize_width}x{resize_height}.")
 
-    # 첫 프레임에서 YOLO로 프롬프트 생성
+    # 리사이즈된 첫 번째 프레임 생성
     video_capture = cv2.VideoCapture(video_path)
     ret, frame = video_capture.read()
     video_capture.release()
     if not ret:
         raise ValueError("Failed to read the first frame from the video.")
 
-    prompts = detect_objects_with_yolo(frame)
+    # 프레임 리사이즈
+    resized_frame = cv2.resize(frame, (adjusted_width, adjusted_height), interpolation=cv2.INTER_LINEAR)
+
+    # 리사이즈된 프레임으로 YOLO 프롬프트 생성
+    prompts = detect_objects_with_yolo(resized_frame)
 
     if not prompts:
         logging.error("Error: YOLO failed to detect objects or generate prompts.")
@@ -152,15 +159,29 @@ def initialize_video_processing(video_path, model, save_path):
     logging.info("YOLO prompts created successfully.")
     logging.info(f"Generated prompts: {prompts}")
 
-    # SAMURAI 상태 초기화에 배치와 리사이즈 정보를 전달
+    # SAMURAI 상태 초기화에 배치와 리사이즈 정보를 전달 (프롬프트 없이 기본 상태 생성)
     state = model.init_state_with_batches(
         frame_batches=frame_batches,
         video_height=resize_height,
         video_width=resize_width,
-        prompts=prompts,
         offload_video_to_cpu=True,
         async_loading_frames=False,
     )
+
+    logging.info("samurai state initialized. setting initial objects...")
+
+    # YOLO에서 생성한 프롬프트를 SAMURAI에 설정 (init_state_with_batches 외부로 이동)
+    set_initial_objects(state, prompts, model)
+
+    # 확인: cond_frame_outputs가 올바르게 초기화되었는지 확인
+    if not state["output_dict"]["cond_frame_outputs"]:
+        logging.error("Error: cond_frame_outputs not initialized.")
+        raise RuntimeError("No objects registered in SAMURAI after initialization.")
+
+    # 디버깅 로그 추가
+    logging.info(f"Object IDs after initialization: {state['obj_ids']}")
+    logging.info(f"Initialized cond_frame_outputs: {state['output_dict']['cond_frame_outputs']}")
+
     logging.info("SAMURAI model state initialized successfully.")
 
     # GPU 메모리 정보 출력
@@ -363,7 +384,7 @@ def is_ball(obj_id):
 
 
 # Adjust image size to be compatible with SAMURAI model
-def adjust_resolution(height, width, target_width=640, patch_size=16):
+def adjust_resolution(height, width, target_width=512, patch_size=16):
     """
     Adjust resolution by:
     1. Scaling down to fit within target_width (maintaining aspect ratio).
