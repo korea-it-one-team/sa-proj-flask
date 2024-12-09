@@ -5,12 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1dbe71b5-ba07-4bd9-a1fb-bcdf39151471" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/samurai" beforeDir="false" afterPath="$PROJECT_DIR$/app/samurai" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/samurai/sam2/sam2/build_sam.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/samurai/sam2/sam2/build_sam.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/samurai/sam2/sam2/modeling/sam2_base.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/samurai/sam2/sam2/modeling/sam2_base.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/samurai/sam2/sam2/sam2_video_predictor.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/samurai/sam2/sam2/sam2_video_predictor.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/samurai/sam2/sam2/utils/misc.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/samurai/sam2/sam2/utils/misc.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/samurai/scripts/main_inference.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/samurai/scripts/main_inference.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flask_app.log" beforeDir="false" afterPath="$PROJECT_DIR$/flask_app.log" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -117,7 +119,7 @@
       <workItem from="1733285094818" duration="857000" />
       <workItem from="1733287136173" duration="192000" />
       <workItem from="1733287782759" duration="955000" />
-      <workItem from="1733727981066" duration="6184000" />
+      <workItem from="1733727981066" duration="6863000" />
     </task>
     <servers />
   </component>
@@ -125,7 +127,7 @@
     <option name="version" value="3" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/sa_proj_flask$Flask_App.coverage" NAME="Flask App Coverage Results" MODIFIED="1733733953439" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/sa_proj_flask$Flask_App.coverage" NAME="Flask App Coverage Results" MODIFIED="1733735183541" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/sa_proj_flask$app.coverage" NAME="app Coverage Results" MODIFIED="1733124488816" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/app" />
   </component>
 </project>
