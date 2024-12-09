@@ -240,6 +240,7 @@ def update_status(video_path, article_id):
         logging.error(f"Error during video save finalization: {e}")
         processing_status[article_id]["status"] = "error"
 
+# 요약 데이터 시각화 및 저장
 def visualize_summary_data(frame_data, video_resolution, save_path):
     logging.info(f"video_resolution : {video_resolution}")
 
@@ -252,6 +253,7 @@ def visualize_summary_data(frame_data, video_resolution, save_path):
     ball_heatmap = np.zeros(video_resolution, dtype=np.float32)
 
     ball_ownership = []  # 공 소유 추적 정보 저장
+    total_frames = len(frame_data)
 
     for frame_idx, frame in enumerate(frame_data):
         for bbox in frame["home_team"]:
@@ -284,8 +286,16 @@ def visualize_summary_data(frame_data, video_resolution, save_path):
     away_heatmap /= away_heatmap.max() if away_heatmap.max() > 0 else 1
     ball_heatmap /= ball_heatmap.max() if ball_heatmap.max() > 0 else 1
 
+    # 공 소유 퍼센티지 계산
+    ownership_count = {"home": 0, "away": 0, "none": 0}
+    for _, owner in ball_ownership:
+        ownership_count[owner] += 1
+    ownership_percentage = {
+        team: (count / total_frames) * 100 for team, count in ownership_count.items()
+    }
+
     # Plotting
-    fig, ax = plt.subplots(2, 2, figsize=(16, 12))
+    fig, ax = plt.subplots(3, 2, figsize=(16, 18))  # 세로 길이를 늘림
 
     # 축구 필드 배경 이미지 로드
     try:
@@ -311,7 +321,7 @@ def visualize_summary_data(frame_data, video_resolution, save_path):
         c="green", label="공", alpha=0.8, s=20
     )
     ax[0, 0].set_title("이동 궤적 시각화")
-    ax[0, 0].legend()
+    ax[0, 0].legend(loc='upper left', bbox_to_anchor=(1, 1))
     ax[0, 0].text(0.5, -0.1, "각 팀과 공의 이동 경로를 시각화한 결과", fontsize=10, ha='center', transform=ax[0, 0].transAxes)
 
     # 2. 홈팀 Heatmap
@@ -329,13 +339,20 @@ def visualize_summary_data(frame_data, video_resolution, save_path):
     ax[1, 1].set_title("공 활동 히트맵")
     ax[1, 1].text(0.5, -0.1, "공의 이동 및 머문 위치를 시각화한 결과", fontsize=10, ha='center', transform=ax[1, 1].transAxes)
 
-    # 공 소유자 정보 추가
-    ball_ownership_summary = "\n".join([f"프레임 {frame}: {owner}" for frame, owner in ball_ownership[:5]])
-    fig.text(0.5, 0.02, f"공 소유 요약 (최초 5 프레임):\n{ball_ownership_summary}", fontsize=12, ha='center')
+    # 5. 공 소유 요약
+    ownership_summary = "\n".join(
+        [f"프레임 {frame}: {owner}" for frame, owner in ball_ownership[:10]]
+    )
+    summary_text = f"공 소유 퍼센티지 요약:\n홈팀: {ownership_percentage['home']:.2f}%\n" \
+                   f"원정팀: {ownership_percentage['away']:.2f}%\n" \
+                   f"소유되지 않음: {ownership_percentage['none']:.2f}%\n\n" \
+                   f"세부 요약 (최초 10 프레임):\n{ownership_summary}"
+    ax[2, 0].axis("off")
+    ax[2, 0].text(0.5, 0.5, summary_text, fontsize=12, ha='center', va='center', wrap=True)
 
     # 저장
     output_path = save_path.replace(".mp4", "_summary.png")  # .mp4 대신 .png로 저장
-    plt.tight_layout(rect=[0, 0.05, 1, 1])  # 공 소유자 정보를 포함하도록 여백 조정
+    plt.tight_layout(rect=[0, 0.05, 1, 0.95])  # 여백 조정
     plt.savefig(output_path)
     plt.close(fig)
 
